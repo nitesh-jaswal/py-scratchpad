@@ -3,8 +3,10 @@ use lexopt::prelude::*;
 use std::path::{Path, PathBuf};
 use std::env;
 use rand::seq::SliceRandom;
-use std::borrow::Cow;
 // TODO:
+// * create new file in temp
+// * open it in code editor
+// * cleanup on close
 // * 
 
 fn get_random_four_character_id() -> String {
@@ -14,11 +16,8 @@ fn get_random_four_character_id() -> String {
     // base_string
 }
 
-// create new file in temp
-// open it in code editor
-// cleanup on close
 
-#[derive(Debug, Clone)]
+#[derive(Debug)]
 struct Scratchpad {
         editor: PathBuf,
         venv: PathBuf,
@@ -26,7 +25,7 @@ struct Scratchpad {
 }
 
 impl Scratchpad {
-    fn parse_args() -> Cow<'static, Scratchpad> {
+    fn parse_args() -> Self {
         use lexopt::prelude::*;
 
         let home = env::var("HOME").unwrap();
@@ -48,18 +47,16 @@ impl Scratchpad {
                 _ => panic!("Unexpected argument encountered {:?}", arg)
             };
         }
-        Cow::Owned(Self {
+        Self {
             editor: editor,
             venv: venv,
             tmp_dir: tmp_dir
-    }) 
+        }
     }
 }
     
-    fn main() {
-        // let id = get_random_four_character_id();
-        let args = Scratchpad::parse_args();
-        println!("{:?}", args);
-
-
+fn main() {
+    // let id = get_random_four_character_id();
+    let args = Scratchpad::parse_args();
+    println!("{:?}", args);
 }
