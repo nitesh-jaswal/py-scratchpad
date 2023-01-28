@@ -154,7 +154,7 @@ fn parse_args() -> Result<CLICommands, ScratchpadError> {
                         
                         if !workspace.is_dir() {
                             println!("Workspace path directory does not exist. Creating...");
-                            std::fs::create_dir_all(&workspace).expect(format!("Unable to create workspace directory in {}", workspace.as_path().to_str().unwrap()).as_str());
+                            std::fs::create_dir_all(&workspace).expect(&format!("Unable to create workspace directory in {}", workspace.display()));
                         }
                         
                         if !editor.is_file() {
@@ -176,9 +176,9 @@ fn parse_args() -> Result<CLICommands, ScratchpadError> {
                         else {
                             venv_dir.push("envs/DEFAULT_ENV");
                             venv_dir.push(workspace.as_path());
-                            std::fs::create_dir_all(&venv_dir).expect(format!("Unable to create default env directory in {}", venv_dir.as_path().to_str().unwrap()).as_str());
+                            std::fs::create_dir_all(&venv_dir).expect(&format!("Unable to create default env directory in {}", venv_dir.display()));
                             Command::new(&python_path)
-                            .args(["-m", "venv", venv_dir.as_path().to_str().unwrap()])
+                            .args(&["-m", "venv", &venv_dir.to_string_lossy()])
                             .output()
                             .expect("Unable to create default virtual env. Please check config input.");
                         }
