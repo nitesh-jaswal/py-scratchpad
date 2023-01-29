@@ -9,7 +9,6 @@ use std::process::Command;
 
 #[derive(Debug)]
 pub enum CLICommands {
-    Help,
     Config {
         editor: PathBuf,
         workspace: PathBuf,
@@ -17,8 +16,6 @@ pub enum CLICommands {
         active_venv: PathBuf,
         last_created_file: Option<PathBuf>
     },
-    New,
-    List,
     Run {
         partial_id: Option<String>
     },
@@ -27,7 +24,10 @@ pub enum CLICommands {
     },
     Open {
         partial_id: Option<String>
-    }
+    },
+    New,
+    Help,
+    List,
 }
 
 fn display_interactive_cli_form() -> (String, String, String, Option<String>) {
@@ -156,8 +156,9 @@ pub fn parse_args() -> Result<CLICommands, ScratchpadError> {
                             }
                         }
                         else {
-                            venv_dir.push("envs/DEFAULT_ENV");
                             venv_dir.push(workspace.as_path());
+                            venv_dir.push("envs/DEFAULT_ENV/");
+                            println!("Creating a venv in {}", venv_dir.to_str().unwrap());
                             std::fs::create_dir_all(&venv_dir).expect(&format!("Unable to create default env directory in {}", venv_dir.display()));
                             Command::new(&python_path)
                             .args(&["-m", "venv", &venv_dir.to_string_lossy()])
