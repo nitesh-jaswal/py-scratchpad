@@ -4,6 +4,7 @@ use std::error::Error;
 use std::convert::From;
     
 #[derive(Debug)]
+#[derive(PartialEq)]
 pub enum CliParseError {
     MissingArgument,
     InvalidArgument(String),
