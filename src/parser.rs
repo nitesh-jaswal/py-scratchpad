@@ -142,8 +142,10 @@ mod tests {
     #[case::config_invalid_option("config --test_invalid", Err(CliParseError::InvalidArgument("--test_invalid".to_string())))]
     #[case::unknown_command("pingala_better_than_fibonacci", Err(CliParseError::UnknownCommand))]
     fn test_parsing_str_to_command(#[case] cmd_str: &str, #[case] expected_output: Result<ScratchpadOperation, CliParseError>) {
+        // Arrange, Act
         let parsed_output = parse_str(cmd_str);
         match expected_output.as_ref() {
+            // Assert
             Ok(output) => {
                 assert_eq!(true, parsed_output.is_ok());
                 let parsed_output = parsed_output.as_ref().unwrap();
