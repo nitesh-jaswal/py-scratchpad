@@ -6,7 +6,7 @@ use std::convert::From;
 #[derive(Debug)]
 #[derive(PartialEq)]
 pub enum CliParseError {
-    MissingArgument,
+    MissingArgument(String),
     InvalidArgument(String),
     UnknownCommand,
 }
@@ -14,7 +14,7 @@ pub enum CliParseError {
 impl fmt::Display for CliParseError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
-            CliParseError::MissingArgument => write!(f, "Missing argument"),
+            CliParseError::MissingArgument(val) => write!(f, "Missing argument: {}", val),
             CliParseError::InvalidArgument(val) => write!(f, "Invalid argument: {}", val),
             CliParseError::UnknownCommand => write!(f, "Unknown command"),
         }
