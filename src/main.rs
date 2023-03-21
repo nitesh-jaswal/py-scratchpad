@@ -92,7 +92,28 @@
 mod parser;
 mod errors;
 mod core;
+mod commands;
 
+use std::env::args;
+
+use parser::parse_str;
+use crate::core::help::display_help;
+use commands::ScratchpadCommands;
 fn main() {
-    println!("This is main!")
+    let mut cmd_vec = args()
+    .skip(1)
+    .collect::<Vec<_>>();
+    let cmd_vec = cmd_vec
+        .iter_mut()
+        .map(|x| x.as_str())
+        .collect::<Vec<_>>();
+    match parse_str(cmd_vec) {
+        Err(err) => print!("CLIParseError: {:?}", err),
+        Ok(operation) => {
+            match operation.command {
+                ScratchpadCommands::Help => println!("{}", display_help()),
+                _ => panic!("Not Implemented!")
+            };
+        }
+    }
 }
